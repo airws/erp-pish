@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'surname',
+        'patronymic',
+        'phone',
+        'snils',
+        'avalible_vo_spo',
     ];
 
     /**
@@ -42,4 +47,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function createTokenUser()
+    {
+        return $this->createToken("API TOKEN")->plainTextToken;
+    }
+
 }
