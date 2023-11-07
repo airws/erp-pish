@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('templates_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('path', 255);
-            $table->string('disk', 255);
-            $table->string('type', 100);
-            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('file_id');
+            $table->foreign('file_id')->references('id')->on('files');
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('types_templates');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('templates_documents');
     }
 };

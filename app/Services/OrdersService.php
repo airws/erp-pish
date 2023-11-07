@@ -29,8 +29,9 @@ class OrdersService
             $bid->programm = $programRepository->getProgram($bid->program_id);
             $bid->listeners = $orderObject->getListenerBid($bid->id);
             foreach ($bid->listeners as &$listener) {
-                $listener->info = $userObject->getUserInfo($listener->user_id);
+                $listener->info = $userObject->getUserInfoInBid($listener->user_id);
                 $listener->configs = $userObject->getConfigsListener($listener->id);
+                $listener->configs->blocks = $programRepository->getBlocksFromGroup($listener->configs->group_programm_id);
                 $price+=$listener->configs->price;
             }
             $bid->payment = $orderObject->getPaymentBid($bid->id);

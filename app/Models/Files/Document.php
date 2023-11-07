@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models\Orders\Bids;
+namespace App\Models\Files;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UsersBids extends Model
+class Document extends Model
 {
     use HasFactory;
+    //protected $table = 'my_flights';
 }

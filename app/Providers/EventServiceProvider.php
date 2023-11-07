@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\GenerateDocumentEvent;
 use App\Events\RegisterUserEvent;
 use App\Events\UpdateUserPasswordEvent;
+use App\Listeners\GenerateDocumentListener;
 use App\Listeners\RegisterUserListener;
 use App\Listeners\UpdateUserPasswordListener;
 use Illuminate\Auth\Events\Registered;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UpdateUserPasswordEvent::class => [
             UpdateUserPasswordListener::class
+        ],
+        GenerateDocumentEvent::class => [
+            GenerateDocumentListener::class
         ]
     ];
 

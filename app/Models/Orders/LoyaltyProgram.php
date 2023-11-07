@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Files;
+namespace App\Models\Orders;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Documents extends Model
+class LoyaltyProgram extends Model
 {
     use HasFactory;
 }

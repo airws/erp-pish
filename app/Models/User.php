@@ -46,7 +46,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'birthday' => 'date',
     ];
+
+//    public function getBirthdayAttribute($value)
+//    {
+//        return $this->asDateTime($value)->format('d.m.Y');
+//    }
 
     public function createTokenUser()
     {

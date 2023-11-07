@@ -5,7 +5,11 @@ namespace App\Models\Orders;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LoyaltyPrograms extends Model
+class PayerDetail extends Model
 {
     use HasFactory;
+
+    protected $table = 'payer_details';
+    protected $guarded = ['id'];
+
 }

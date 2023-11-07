@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('user_area_of_trainings', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->string('path', 255);
-            $table->string('disk', 255);
-            $table->string('type', 100);
             $table->boolean('active')->default(1);
+            $table->string('code', 255)->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('user_area_of_trainings');
     }
 };

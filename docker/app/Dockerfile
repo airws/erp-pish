@@ -37,6 +37,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g $uid www
 RUN useradd -G www-data,root -u $uid -ms /bin/bash -g www www
 
+
 # Копируем содержимое текущего каталога в рабочую директорию
 COPY . /var/www
 COPY --chown=www:www . /var/www
@@ -44,6 +45,7 @@ COPY --chown=www:www . /var/www
 # Меняем пользователя на www
 USER www
 
+RUN apt-get install language-pack-ru
 # В контейнере открываем 9000 порт и запускаем сервер php-fpm
 EXPOSE 9000
 CMD ["php-fpm"]

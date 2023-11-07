@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Orders\Bids;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bids extends Model
+class UserQualification extends Model
 {
     use HasFactory;
 }
