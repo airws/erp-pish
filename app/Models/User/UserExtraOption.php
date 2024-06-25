@@ -11,7 +11,10 @@ class UserExtraOption extends Model
         'date_of_issue',
         'date_of_issue_of_the_education_document',
     ];
-
+    protected $casts =
+        [
+          'date_of_issue' => 'date'
+        ];
 
     use HasFactory;
 }

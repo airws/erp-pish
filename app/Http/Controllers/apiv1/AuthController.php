@@ -36,6 +36,7 @@ class AuthController extends Controller
             $validateUserData['surname'],
             $validateUserData['phone'],
             $validateUserData['snils'],
+            $validateUserData['password'],
             (bool) $validateUserData['avalible_vo_spo'],
             $validateUserData['patronymic'],
         );

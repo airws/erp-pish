@@ -24,6 +24,15 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev
 
+RUN sed -i -e \
+  's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen \
+   && locale-gen
+
+ENV LANG ru_RU.UTF-8
+ENV LANGUAGE ru_RU:ru
+ENV LC_LANG ru_RU.UTF-8
+ENV LC_ALL ru_RU.UTF-8
+
 # Очищаем кэш
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -45,7 +54,6 @@ COPY --chown=www:www . /var/www
 # Меняем пользователя на www
 USER www
 
-RUN apt-get install language-pack-ru
 # В контейнере открываем 9000 порт и запускаем сервер php-fpm
 EXPOSE 9000
 CMD ["php-fpm"]

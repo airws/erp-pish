@@ -95,7 +95,12 @@ class OrdersRepository
         return $loyalityProgram;
     }
 
-
+    public function getOrderById(int $id): Order
+    {
+        return Order::select('*')
+            ->where(['id' => $id])
+            ->first();
+    }
 
 
 }

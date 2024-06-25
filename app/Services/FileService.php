@@ -7,6 +7,7 @@ use App\Models\Files\File;
 use App\Repositories\FileRepository;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File as FileFacade;
 
 class FileService
 {
@@ -21,11 +22,15 @@ class FileService
         return $fileInfo;
     }
 
-    public static function moveAndRmTemporaryFile($path)
+    public static function moveAndRmTemporaryFile($path, $name)
     {
-        $moveResult = Storage::move($path, Storage::disk('public')->path('doc').'/test44.docx');
+        $newPath = Storage::disk('public')->path('doc').'/'.$name.'.docx';
+        $moveResult = FileFacade::copy($path, $newPath);
         $delResult = Storage::delete($path);
-        return true;
+
+        $fileInfo = self::saveInfoFileDB('storage/doc/'.$name.'.docx', $name.'docx', 'public', 'docx');
+
+        return $fileInfo;
     }
 
     private static function saveInfoFileDB(string $filepath, string $fileName, string $disk, string $type): File

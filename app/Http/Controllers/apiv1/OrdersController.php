@@ -15,7 +15,8 @@ use App\Repositories\PaymentRepository;
 use App\Repositories\UserRepository;
 use App\Services\OrdersService;
 use Illuminate\Http\Request;
-
+use App\Repositories\FileRepository;
+use App\Http\Resources\CreateOrderResources;
 class OrdersController extends Controller
 {
     public function getUserOrdersList(Request $request)
@@ -50,6 +51,10 @@ class OrdersController extends Controller
     {
 
         GenerateDocumentEvent::dispatch(TypesTemplate::select('id', 'name', 'code')->where(['code' => 'AgreementForServices'])->first(), 1);
+        $file = FileRepository::getLastFile();
+        
+        return new CreateOrderResources($file);
+
     }
 
 }

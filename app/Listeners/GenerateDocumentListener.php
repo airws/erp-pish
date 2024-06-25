@@ -34,17 +34,14 @@ class GenerateDocumentListener
     public function handle(GenerateDocumentEvent $event): void
     {
         $this->receiverData = ReceiverDataFactory::create($event->type);
-        $insertData = $this->receiverData->getData($event->id);
+        list($name, $insertData) = $this->receiverData->getData($event->id);
         $templateDoc = TemplatesDocument::select('id', 'file_id')->where(['type_id' => $event->type->id])->first();
         $file = File::select('id', 'path', 'disk')->where(['id' => $templateDoc->file_id])->first();
         /** @var SetDocumentWithTemplate $generate */
         $generate = app(ISetDocumentData::class);
         $timePath = $generate->createDocumentWithTemplate(Storage::disk($file->disk)->path($file->path), $insertData);
-        $newPath = FileService::moveAndRmTemporaryFile($timePath);
-        echo "<pre>";
-        var_dump();
-        echo "</pre>";
-        die();
-        
+
+        $newPath = FileService::moveAndRmTemporaryFile($timePath, $name);
+
     }
 }

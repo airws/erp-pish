@@ -18,11 +18,12 @@ class UserService
         string $surname,
         string $phone,
         string $snils,
+        string $password,
         bool   $avalible_vo_spo,
         string $patronymic = '',
     ): User
     {
-        $password = self::generatedPassword();
+        //$password = self::generatedPassword();
 
         $userData = [
             'name' => $name,
@@ -46,7 +47,6 @@ class UserService
         $typeLogin = CheckLogin::defineTypeLoginForAuth($login);
 
         if($typeLogin == CheckLogin::TYPE_EMAIL) {
-
             if (!Auth::attempt(['email' => $login, 'password' => $password])) {
                 return null;
             }

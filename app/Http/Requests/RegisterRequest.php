@@ -27,6 +27,7 @@ class RegisterRequest extends FormRequest
             'surname' => 'required',
             'phone' => 'required',
             'snils' => 'required',
+            'password' => 'required',
             'patronymic' => '',
             'avalible_vo_spo' => 'required|boolean',
         ];
