@@ -12,4 +12,5 @@ class PayerDetail extends Model
     protected $table = 'payer_details';
     protected $guarded = ['id'];
 
+    public const TYPE_FACE = ['FIZ'=>'FIZ', 'UR'=>'UR', 'IP'=>'IP'];
 }

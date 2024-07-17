@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('kpp', 20);
             $table->string('ogrn', 20);
             $table->string('city', 190);
-            $table->integer('index');
+            $table->string('index', 255);
             $table->string('abbreviation', 255);
             $table->text('full_ur_name');
             $table->string('fio_rod_head', 255);

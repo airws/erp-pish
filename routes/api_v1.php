@@ -31,4 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/getDocument', [DocumentsController::class, 'createDocumentsTemplate'] );
     Route::post('/createOrder', [OrdersController::class, 'createOrder'] );
     Route::post('/getPaymentMethods', [OrdersController::class, 'getPaymentMethods'] );
+    Route::post('/orders/createPayerDetail', [OrdersController::class, 'createPayerDetail'] );
+    Route::post('/orders/updatePayerDetail/{payerId}', [OrdersController::class, 'updatePayerDetail'] );
 });

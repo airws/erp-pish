@@ -17,6 +17,8 @@ use App\Services\OrdersService;
 use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
 use App\Http\Resources\CreateOrderResources;
+use App\Http\Requests\CreatePayerDetailRequest;
+use App\DTO\PayerDetailDTO;
 class OrdersController extends Controller
 {
     public function getUserOrdersList(Request $request)
@@ -57,4 +59,19 @@ class OrdersController extends Controller
 
     }
 
+    public function createPayerDetail(CreatePayerDetailRequest $request)
+    {
+        $dto = new PayerDetailDTO($request->validated());
+        $payerDetail = OrdersService::createPayerDetail($dto);
+
+        return new OrderDetailResources($payerDetail);
+    }
+
+    public function updatePayerDetail($payerId, CreatePayerDetailRequest $request)
+    {
+        $dto = new PayerDetailDTO($request->validated());
+        $payerDetail = OrdersService::updatePayerDetail($dto, (int) $payerId);
+
+        return new OrderDetailResources($payerDetail);
+    }
 }
