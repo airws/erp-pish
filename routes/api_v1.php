@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\apiv1\FileController;
 use App\Http\Controllers\apiv1\OrdersController;
+use App\Http\Controllers\apiv1\BidsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\apiv1\AuthController;
@@ -27,6 +28,7 @@ Route::post('/auth/forgotpassword', [AuthController::class, 'forgotPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/orders', [OrdersController::class, 'getUserOrdersList']);
     Route::post('/orders/{orderId}', [OrdersController::class, 'getOrderDetail'])->where('orderId', '[0-9]+');
+    Route::post('/orders/bids/deleteProgram', [BidsController::class, 'deleteProgramInBids']);
     Route::post('/upload', [FileController::class, 'upload']);
     Route::post('/getDocument', [DocumentsController::class, 'createDocumentsTemplate'] );
     Route::post('/createOrder', [OrdersController::class, 'createOrder'] );

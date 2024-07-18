@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('type_id')->references('id')->on('type_documents');
             $table->unsignedBigInteger('status_id')->unsigned();
             $table->foreign('status_id')->references('id')->on('status_documents');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

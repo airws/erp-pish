@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('job_title', 255);
             $table->string('position_categories', 255);
 
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

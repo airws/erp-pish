@@ -4,8 +4,9 @@ namespace App\Models\Orders;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LoyaltyProgram extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 }

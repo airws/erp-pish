@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserExtraOption extends Model
 {
@@ -16,5 +17,5 @@ class UserExtraOption extends Model
           'date_of_issue' => 'date'
         ];
 
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 }

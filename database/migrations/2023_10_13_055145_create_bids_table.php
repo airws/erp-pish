@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('status_id')->references('id')->on('status_bids');
             $table->unsignedBigInteger('program_id')->unsigned();
             $table->foreign('program_id')->references('id')->on('programs');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

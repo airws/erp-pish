@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('programm_id')->unsigned();
             $table->foreign('programm_id')->references('id')->on('programs'); // Предполагается, что у вас есть таблица "programs" для программ
             $table->string('type', 255);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

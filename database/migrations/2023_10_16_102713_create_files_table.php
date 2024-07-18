@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('disk', 255);
             $table->string('type', 100);
             $table->boolean('active')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

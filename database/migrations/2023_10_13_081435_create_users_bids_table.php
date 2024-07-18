@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('bid_id')->unsigned();
             $table->foreign('bid_id')->references('id')->on('bids');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

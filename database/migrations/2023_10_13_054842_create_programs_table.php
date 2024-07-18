@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('type_document_id')->unsigned();
             $table->foreign('type_document_id')->references('id')->on('types_document_education');
             $table->integer('count_clock');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

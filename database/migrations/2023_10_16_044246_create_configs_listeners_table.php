@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('form_education', 255); // Форма обучения
             $table->string('type_document', 255); // Вид документа
             $table->integer('price'); // Цена
+            $table->softDeletes();
             $table->timestamps();
         });
     }

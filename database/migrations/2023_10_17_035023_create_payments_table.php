@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_method_id');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->integer('percent')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('group_program_id')->references('id')->on('group_programs');
             $table->unsignedBigInteger('blocks_program_id')->unsigned();
             $table->foreign('blocks_program_id')->references('id')->on('blocks_programs');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('price')->nullable();
             $table->integer('percent')->nullable();
             $table->string('code', 100)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

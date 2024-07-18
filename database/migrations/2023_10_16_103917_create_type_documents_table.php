@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('code', 100)->unique();
             $table->unsignedBigInteger('template_id')->unsigned();
             $table->foreign('template_id')->references('id')->on('files');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

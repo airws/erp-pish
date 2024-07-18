@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('active')->default(1);
             $table->boolean('avalible_vo_spo');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

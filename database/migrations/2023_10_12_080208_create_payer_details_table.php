@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('patronymic', 100);
             $table->string('snils', 15);
             $table->string('registration_address', 255);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

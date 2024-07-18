@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('price')->nullable(false);
             $table->unsignedBigInteger('manager_id')->nullable(false)->unsigned();
             $table->foreign('manager_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
