@@ -7,6 +7,7 @@ use App\Repositories\OrdersRepository;
 use App\Repositories\ProgramRepository;
 use App\Repositories\UserRepository;
 use App\DTO\PayerDetailDTO;
+use App\Exceptions\PayerNotFound;
 
 class OrdersService
 {
@@ -77,6 +78,17 @@ class OrdersService
         return $payer;
     }
 
+    public static function getPayer(int $orderId) : PayerDetail
+    {
+        $payer = PayerDetail::where('order_id', $orderId)->first();
+        if(!$payer)
+        {
+            throw new PayerNotFound();
+        }
+
+        return $payer;
+    }
+
     private static function fillFieldsPayerDetail(PayerDetailDTO $dto, PayerDetail $payer): PayerDetail
     {
         $payer->order_id = $dto->getOrderId();
@@ -109,4 +121,5 @@ class OrdersService
 
         return $payer;
     }
+
 }

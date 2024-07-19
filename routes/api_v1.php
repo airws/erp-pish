@@ -28,6 +28,7 @@ Route::post('/auth/forgotpassword', [AuthController::class, 'forgotPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/orders', [OrdersController::class, 'getUserOrdersList']);
     Route::post('/orders/{orderId}', [OrdersController::class, 'getOrderDetail'])->where('orderId', '[0-9]+');
+    Route::post('/orders/getPayer/{orderId}', [OrdersController::class, 'getPayer'])->where('orderId', '[0-9]+');
     Route::post('/orders/bids/deleteProgram', [BidsController::class, 'deleteProgramInBids']);
     Route::post('/orders/bids/deleteListener/{listenerId}', [BidsController::class, 'deleteListener'])->where('listenerId', '[0-9]+');
     Route::post('/orders/bids/createListener', [BidsController::class, 'createListener']);

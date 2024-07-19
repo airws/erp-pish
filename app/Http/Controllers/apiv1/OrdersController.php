@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apiv1;
 use App\Events\GenerateDocumentEvent;
 use App\Events\UpdateUserPasswordEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GetDetailsResources;
 use App\Http\Resources\OrderDetailResources;
 use App\Http\Resources\OrdersUserListResources;
 use App\Http\Resources\PaymentMethodsResource;
@@ -73,5 +74,10 @@ class OrdersController extends Controller
         $payerDetail = OrdersService::updatePayerDetail($dto, (int) $payerId);
 
         return new OrderDetailResources($payerDetail);
+    }
+
+    public function getPayer($orderId)
+    {
+        return new GetDetailsResources(OrdersService::getPayer((int) $orderId));
     }
 }
