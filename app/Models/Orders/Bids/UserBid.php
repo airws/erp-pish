@@ -13,12 +13,15 @@ class UserBid extends Model
 
     protected $table = 'users_bids';
 
+    protected $fillable = ['id','user_id', 'bid_id'];
+
     protected static function boot()
     {
         parent::boot();
 
         static::deleting(function ($userBid) {
             $userBid->user()->delete();
+            $userBid->configs_listener()->delete();
         });
 
         static::restoring(function ($userBid) {
@@ -29,6 +32,10 @@ class UserBid extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function configs_listener()
+    {
+        return $this->belongsTo(ConfigsListener::class, 'id', 'listener_id');
     }
 
     public function bid()
