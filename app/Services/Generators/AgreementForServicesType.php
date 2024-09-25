@@ -8,9 +8,22 @@ use App\Repositories\OrdersRepository;
 use App\Repositories\ProgramRepository;
 use App\Repositories\UserRepository;
 
+/**
+ * Class AgreementForServicesType
+ *
+ * Этот класс реализует интерфейс IReceiverData и используется для генерации данных для договора об оказании услуг.
+ *
+ * @package App\Services\Generators
+ */
 class AgreementForServicesType implements IReceiverData
 {
 
+    /**
+     * Получает данные для договора об оказании услуг по идентификатору заказа.
+     *
+     * @param int $id Идентификатор заказа.
+     * @return array Возвращает массив данных для заполнения шаблона договора.
+     */
     public function getData(int $id): array
     {
 

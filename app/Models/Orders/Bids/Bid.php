@@ -3,12 +3,19 @@
 namespace App\Models\Orders\Bids;
 
 use App\Models\Orders\Bids\UserBid;
+use App\Models\Programs\Program;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bid extends Model
 {
+    protected $fillable = [
+        'order_id',
+        'program_id',
+        'status_id',
+    ];
+
     use HasFactory, SoftDeletes;
     protected static function boot()
     {
@@ -30,5 +37,9 @@ class Bid extends Model
     public function usersBids()
     {
         return $this->hasMany(UserBid::class);
+    }
+    public function programs()
+    {
+        return $this->hasMany(Program::class);
     }
 }

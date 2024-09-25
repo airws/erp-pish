@@ -16,17 +16,25 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\RegisterRequestRequest;
 use App\Http\Requests\AuthRequest;
 
-
+/**
+ * Class AuthController
+ *
+ * Контроллер для управления процессом аутентификации и регистрации пользователей.
+ *
+ * @package App\Http\Controllers\apiv1
+ */
 class AuthController extends Controller
 {
     /**
-     * @param RegisterRequest $request
+     * Регистрирует нового пользователя.
+     *
+     * @param RegisterRequestRequest $request
      * @return RegisterResources
      */
-    public function createUser(RegisterRequest $request)
+    public function createUser(RegisterRequestRequest $request)
     {
         $validateUserData = $request->validated();
 
@@ -36,7 +44,7 @@ class AuthController extends Controller
             $validateUserData['surname'],
             $validateUserData['phone'],
             $validateUserData['snils'],
-            $validateUserData['password'],
+            //$validateUserData['password'],
             (bool) $validateUserData['avalible_vo_spo'],
             $validateUserData['patronymic'],
         );
@@ -45,10 +53,11 @@ class AuthController extends Controller
             'message' => 'Пользователь зарегистрирован',
             'token' => $user->createTokenUser()
         ]);
-
     }
 
     /**
+     * Авторизует пользователя.
+     *
      * @param AuthRequest $request
      * @return AuthResource
      * @throws AuthException
@@ -62,20 +71,30 @@ class AuthController extends Controller
         }
 
         return new AuthResource([
-                'message' => 'Пользователь авторизован',
-                'token' => $user->createTokenUser()
+            'message' => 'Пользователь авторизован',
+            'token' => $user->createTokenUser()
         ]);
     }
 
+    /**
+     * Процесс сброса пароля пользователя.
+     *
+     * @param ForgotPasswordRequest $request
+     * @return AuthResource
+     * @throws UserNotFoundException
+     */
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $validateUserData = $request->validated();
         $userReposity = new UserRepository();
-        if(!$user = $userReposity->getByEmail($validateUserData['email'])){
+
+        if (!$user = $userReposity->getByEmail($validateUserData['email'])) {
             throw new UserNotFoundException();
         }
+
         UserService::updatePassword($user);
-        //\Mail::to($validateUserData['email'])->send(new ForgotPasswordMail($password));
+
+        // \Mail::to($validateUserData['email'])->send(new ForgotPasswordMail($password));
 
         return new AuthResource([
             'message' => 'Пароль отправлен на указанную вами почту',

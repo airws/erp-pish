@@ -16,6 +16,7 @@ class CreateListenerResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'listener_id' => $this['listener_id'],
             'user' => $this['user'],
             'config_listener' => $this['config_listener'],
         ];

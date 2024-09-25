@@ -5,102 +5,166 @@ namespace App\Repositories;
 use App\Helpers\ChangeDateAndTimeHelper;
 use App\Models\Orders\Bids\Bid;
 use App\Models\Orders\Bids\StatusBid;
-use App\Models\Orders\Bids\UsersBid;
+use App\Models\Orders\Bids\UserBid;
 use App\Models\Orders\LoyaltyProgram;
 use App\Models\Orders\Order;
 use App\Models\Orders\PayerDetail;
 use App\Models\Orders\Payment;
-use App\Models\Programs\Program;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Orders\StatusOrder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * Class OrdersRepository
+ *
+ * Репозиторий для работы с заказами и связанными с ними данными.
+ *
+ * @package App\Repositories
+ */
 class OrdersRepository
 {
-    public function getOrderUserList(int $userId, int $page = 1): LengthAwarePaginator
+    public function getStatusIdOrderByCode(string $code): int
     {
-        $orders = Order::select('id', 'created_at')
-            ->where(['user_id' => $userId])
-            ->paginate(10, ['*'], 'page', $page);
-
-        return $orders;
+        return StatusOrder::where('code', $code)->value('id');
     }
 
-    public function getOrderUser(int $userId, int $orderId)
+    /**
+     * Получает список заказов пользователя с пагинацией.
+     *
+     * @param int $userId Идентификатор пользователя.
+     * @param int $page Номер страницы для пагинации.
+     * @return LengthAwarePaginator Пагинированный список заказов.
+     */
+    public function getOrderUserList(int $userId, int $page = 1): LengthAwarePaginator
     {
-        $order = Order::select('id', 'user_id','price','manager_id', 'created_at')
+        return Order::select('id', 'created_at')
+            ->where(['user_id' => $userId])
+            ->paginate(10, ['*'], 'page', $page);
+    }
+
+    /**
+     * Получает информацию о конкретном заказе пользователя.
+     *
+     * @param int $userId Идентификатор пользователя.
+     * @param int $orderId Идентификатор заказа.
+     * @return Order|null Заказ с добавленной информацией о дате и имени.
+     */
+    public function getOrderUser(int $userId, int $orderId): ?Order
+    {
+        $order = Order::select('id', 'user_id', 'price', 'manager_id', 'created_at')
             ->where(['user_id' => $userId])
             ->where(['id' => $orderId])
             ->first();
 
-        $order->name = 'Заявка №'.$order->id;
-        $order->date_created = ChangeDateAndTimeHelper::changeFormatDateAndTime($order->created_at);
-        unset($order->created_at);
+        if ($order) {
+            $order->name = 'Заявка №' . $order->id;
+            $order->date_created = ChangeDateAndTimeHelper::changeFormatDateAndTime($order->created_at);
+            unset($order->created_at);
+        }
 
         return $order;
     }
 
-    public function getPayerDetailsOrder(int $orderId)
+    /**
+     * Получает детали плательщика для заказа.
+     *
+     * @param int $orderId Идентификатор заказа.
+     * @return PayerDetail|null Детали плательщика.
+     */
+    public function getPayerDetailsOrder(int $orderId): ?PayerDetail
     {
-        $payment = PayerDetail::select('*')
+        return PayerDetail::select('*')
             ->where(['order_id' => $orderId])
             ->first();
-        
-        return $payment;
     }
 
-    public function getBidsOrder(int $orderId)
+    public function getListenerOrder(int $orderId): \Illuminate\Database\Eloquent\Collection
     {
-        $bids = Bid::select('*')
+        $bids = $this->getBidsOrder($orderId);
+        $bidIds = [];
+        foreach ($bids as $bid)
+        {
+            $bidIds[] = $bid->id;
+        }
+
+        return UserBid::select('id', 'user_id')
+            ->where(['bid_id' => $bidIds])
+            ->get();
+    }
+    /**
+     * Получает список заявок для заказа.
+     *
+     * @param int $orderId Идентификатор заказа.
+     * @return \Illuminate\Database\Eloquent\Collection Список заявок.
+     */
+    public function getBidsOrder(int $orderId): \Illuminate\Database\Eloquent\Collection
+    {
+        return Bid::select('*')
             ->where(['order_id' => $orderId])
             ->get();
-
-        return $bids;
     }
 
-    public function getStatusBidInfo(int $statusId)
+    /**
+     * Получает информацию о статусе заявки.
+     *
+     * @param int $statusId Идентификатор статуса заявки.
+     * @return StatusBid|null Информация о статусе заявки.
+     */
+    public function getStatusBidInfo(int $statusId): ?StatusBid
     {
-        $statusInfo = StatusBid::select('id', 'name', 'code')
+        return StatusBid::select('id', 'name', 'code')
             ->where(['id' => $statusId])
             ->first();
-
-        return $statusInfo;
     }
 
-    public function getListenerBid(int $bidId)
+    /**
+     * Получает список слушателей для заявки.
+     *
+     * @param int $bidId Идентификатор заявки.
+     * @return \Illuminate\Database\Eloquent\Collection Список слушателей.
+     */
+    public function getListenerBid(int $bidId): \Illuminate\Database\Eloquent\Collection
     {
-        $listeners = UsersBid::select('id', 'user_id')
+        return UserBid::select('id', 'user_id')
             ->where(['bid_id' => $bidId])
             ->get();
-
-        return $listeners;
     }
 
-    public function getPaymentBid(int $bidId)
+    /**
+     * Получает список платежей для заявки.
+     *
+     * @param int $bidId Идентификатор заявки.
+     * @return \Illuminate\Database\Eloquent\Collection Список платежей.
+     */
+    public function getPaymentBid(int $bidId): \Illuminate\Database\Eloquent\Collection
     {
-        $payment = Payment::select('id', 'document_id', 'payment_method_id', 'percent')
+        return Payment::select('id', 'document_id', 'payment_method_id', 'percent')
             ->where(['bid_id' => $bidId])
             ->get();
-
-        return $payment;
     }
 
-    public function getLoyalityProgram(int $price)
+    /**
+     * Получает информацию о программе лояльности на основе цены заказа.
+     *
+     * @param int $price Цена заказа.
+     * @return LoyaltyProgram|null Программа лояльности.
+     */
+    public function getLoyalityProgram(int $price): ?LoyaltyProgram
     {
-        $loyalityProgram = LoyaltyProgram::select('id', 'name', 'percent', 'code')
+        return LoyaltyProgram::select('id', 'name', 'percent', 'code')
             ->where(['price' => $price])
             ->first();
-
-        return $loyalityProgram;
     }
 
-    public function getOrderById(int $id): Order
+    /**
+     * Получает заказ по его идентификатору.
+     *
+     * @param int $id Идентификатор заказа.
+     * @return Order|null Заказ.
+     */
+    public function getOrderById(int $id): ?Order
     {
         return Order::select('*')
             ->where(['id' => $id])
             ->first();
     }
-
-
 }

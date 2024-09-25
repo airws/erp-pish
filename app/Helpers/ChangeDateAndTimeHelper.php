@@ -3,8 +3,16 @@
 namespace App\Helpers;
 use Carbon\Carbon;
 
+/**
+ * Класс ChangeDateAndTimeHelper.
+ *
+ * Помощник для работы с датами и временем.
+ */
 class ChangeDateAndTimeHelper
 {
+    /**
+     * Список месяцев для конвертации даты.
+     */
     private static array $monthsList = array(
         "01" => "января",
         "02" => "февраля",
@@ -20,7 +28,12 @@ class ChangeDateAndTimeHelper
         "12" => "декабря"
     );
 
-
+    /**
+     * Изменяет формат даты и времени.
+     *
+     * @param Carbon $dateTime Объект даты и времени.
+     * @return string Возвращает отформатированную строку даты и времени.
+     */
     public static function changeFormatDateAndTime($dateTime)
     {
         //$carbonDate = Carbon::parse($dateTime); // Преобразование строки в объект Carbon
@@ -28,6 +41,12 @@ class ChangeDateAndTimeHelper
         return $formattedDate;
     }
 
+    /**
+     * Изменяет формат даты.
+     *
+     * @param Carbon $date Объект даты.
+     * @return string Возвращает отформатированную строку даты.
+     */
     public static function changeFormatDate($date)
     {
         //$carbonDate = Carbon::parse($dateTime); // Преобразование строки в объект Carbon
@@ -35,6 +54,12 @@ class ChangeDateAndTimeHelper
         return $formattedDate;
     }
 
+    /**
+     * Изменяет формат даты для документа.
+     *
+     * @param Carbon $date Объект даты.
+     * @return array Возвращает отформатированные день, месяц и год.
+     */
     public static function changeDateForDocument($date)
     {
         setlocale(LC_TIME, 'ru_RU.utf8');
@@ -44,14 +69,16 @@ class ChangeDateAndTimeHelper
         return [$day, $month, $year];
     }
 
+    /**
+     * Изменяет формат даты для имени файла.
+     *
+     * @param Carbon $date Объект даты.
+     * @return string Возвращает отформатированную строку даты подходящую для имени файла.
+     */
     public static function changeFormatDateForNameFile($date)
     {
         //$carbonDate = Carbon::parse($dateTime); // Преобразование строки в объект Carbon
         $formattedDate = $date->format('d_m_Y'); // Форматирование в российский стандарт
         return $formattedDate;
     }
-
-
-
-
 }

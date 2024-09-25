@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Services\Documents;
+namespace App\Services\Documents;
 
 class DocumentsService
 {

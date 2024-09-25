@@ -250,6 +250,38 @@ class PayerDetailDTO
         return $this->registration_address;
     }
 
+    /**
+     * Конструктор для создания объекта на основе данных плательщика.
+     *
+     * @param array $data Ассоциативный массив с данными плательщика.
+     *  - 'type_face' (string): Тип лица (FIZ, IP, UR).
+     *  - 'order_id' (int): Идентификатор заказа.
+     *  - 'bik_bank' (string): БИК банка.
+     *  - 'name_bank' (string): Название банка.
+     *  - 'rc' (string): Расчетный счет.
+     *  - 'ks' (string): Корреспондентский счет.
+     *  - 'kbk' (string): КБК.
+     *  - 'personal_account' (string): Лицевой счет.
+     *  - 'actual_address' (string): Фактический адрес.
+     *  - 'surname' (string): Фамилия (для FIZ).
+     *  - 'name' (string): Имя (для FIZ).
+     *  - 'patronymic' (string): Отчество (для FIZ).
+     *  - 'snils' (string): СНИЛС (для FIZ).
+     *  - 'registration_address' (string): Адрес регистрации (для FIZ, опционально).
+     *  - 'ur_address' (string): Юридический адрес (для IP и UR).
+     *  - 'inn' (string|null): ИНН (для IP и UR, опционально).
+     *  - 'kpp' (string|null): КПП (для IP и UR, опционально).
+     *  - 'ogrn' (string|null): ОГРН (для IP и UR, опционально).
+     *  - 'city' (string|null): Город (для IP и UR, опционально).
+     *  - 'index' (string|null): Почтовый индекс (для IP и UR, опционально).
+     *  - 'abbreviation' (string|null): Аббревиатура (для IP и UR, опционально).
+     *  - 'full_ur_name' (string|null): Полное юридическое название (для IP и UR, опционально).
+     *  - 'fio_rod_head' (string|null): ФИО в родительном падеже руководителя (для IP и UR, опционально).
+     *  - 'fio_head' (string|null): ФИО руководителя (для IP и UR, опционально).
+     *  - 'job_title' (string|null): Должность руководителя (для IP и UR, опционально).
+     *  - 'acts_basis' (string|null): Действует на основании (для IP и UR, опционально).
+     *  - 'concluded_accordance' (string|null): Заключает в соответствии с (для IP и UR, опционально).
+     */
     public function __construct(array $data)
     {
         switch ($data['type_face']) {

@@ -11,14 +11,32 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
+/**
+ * Событие, которое срабатывает при регистрации пользователя.
+ */
 class RegisterUserEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $password;
     /**
-     * Create a new event instance.
+     * Зарегистрированный пользователь.
+     *
+     * @var User
+     */
+    public User $user;
+
+    /**
+     * Пароль зарегистрированного пользователя.
+     *
+     * @var string
+     */
+    public string $password;
+
+    /**
+     * Создание нового экземпляра события.
+     *
+     * @param User $user Зарегистрированный пользователь.
+     * @param string $password Пароль зарегистрированного пользователя.
      */
     public function __construct(User $user, string $password)
     {
