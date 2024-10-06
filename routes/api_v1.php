@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\apiv1\AudienceController;
 use App\Http\Controllers\apiv1\FileController;
 use App\Http\Controllers\apiv1\OrdersController;
 use App\Http\Controllers\apiv1\BidsController;
@@ -26,6 +27,10 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post('/auth/forgotpassword', [AuthController::class, 'forgotPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/audiences/createAudience', [AudienceController::class, 'createAudience']);
+    Route::post('/audiences/getAudienceById', [AudienceController::class, 'getAudienceById']);
+    Route::post('/audiences/updateAudience', [AudienceController::class, 'updateAudience']);
+    Route::post('/audiences/deleteAudience/{audienceId}', [AudienceController::class, 'deleteAudience'])->where('audienceId', '[0-9]+');
     Route::post('/orders', [OrdersController::class, 'getUserOrdersList']);
     Route::post('/orders/{orderId}', [OrdersController::class, 'getOrderDetail'])->where('orderId', '[0-9]+');
     Route::post('/orders/getPayer/{orderId}', [OrdersController::class, 'getPayer'])->where('orderId', '[0-9]+');
