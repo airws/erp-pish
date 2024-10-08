@@ -15,6 +15,11 @@ use App\Models\Audience;
  */
 class AudienceService
 {
+    /**
+     * @param string $name
+     * @param int $capacity
+     * @return Audience
+     */
     public function createAudience(string $name, int $capacity): Audience
     {
         $audienceData = [
@@ -25,6 +30,8 @@ class AudienceService
     }
 
     /**
+     * @param int $id
+     * @return Audience
      * @throws AudienceNotFoundException
      */
     public function getAudienceById(int $id): Audience
@@ -36,19 +43,36 @@ class AudienceService
         return $audience;
     }
 
-    public function updateAudience(int $id, string $name, int $capacity)
+    /**
+     * @param int $id
+     * @param string $name
+     * @param int $capacity
+     * @return bool
+     * @throws AudienceNotFoundException
+     */
+    public function updateAudience(int $id, string $name, int $capacity): bool
     {
-        $audience = Audience::findOrFail($id);
-        $audienceData = [
+        $audience = Audience::find($id);
+        if (!$audience) {
+            throw new AudienceNotFoundException();
+        }
+        return $audience->update([
             'name' => $name,
             'capacity' => $capacity,
-        ];
-        return $audience->update($audienceData);
+        ]);
     }
 
-    public function deleteAudience(int $id)
+    /**
+     * @param int $id
+     * @return bool
+     * @throws AudienceNotFoundException
+     */
+    public function deleteAudience(int $id): bool
     {
-        $audience = Audience::findOrFail($id);
+        $audience = Audience::find($id);
+        if (!$audience) {
+            throw new AudienceNotFoundException();
+        }
         return $audience->delete();
     }
 }
