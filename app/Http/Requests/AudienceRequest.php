@@ -26,7 +26,7 @@ class AudienceRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'capacity' => 'required|integer|min:5',
+            'capacity' => 'required|integer',
         ];
     }
 }

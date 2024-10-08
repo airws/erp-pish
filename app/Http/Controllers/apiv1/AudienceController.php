@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\apiv1;
 
+use App\Exceptions\AudienceNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AudienceRequest;
+use App\Http\Resources\AudienceResource;
 use App\Services\AudienceService;
 use Illuminate\Http\JsonResponse;
 
@@ -14,29 +16,39 @@ use Illuminate\Http\JsonResponse;
  */
 class AudienceController extends Controller
 {
+    private AudienceService $audienceService;
+
+    public function __construct(AudienceService $audienceService)
+    {
+        $this->audienceService = $audienceService;
+    }
     /**
      * C - Create audience.
      *
      * @param AudienceRequest $request
-     * @return JsonResponse
+     * @return AudienceResource
      */
-    public function createAudience(AudienceRequest $request): JsonResponse
+    public function createAudience(AudienceRequest $request): AudienceResource
     {
-        $request = $request->validated();
-        $audience = AudienceService::createAudience($request->name, $request->capacity);
-        return response()->json(new AudienceResource(), 201);
+        $request->validate();
+        $audience = $this->audienceService->createAudience($request->input('name'), $request->input('capacity'));
+        return new AudienceResource($audience);
     }
 
     /**
      * R - Get audience by ID.
      *
      * @param int $id
-     * @return JsonResponse
+     * @return AudienceResource
      */
-    public function getAudienceById(int $id): JsonResponse
+    public function getAudienceById(int $id): AudienceResource
     {
-        $audience = AudienceService::getAudienceById($id);
-        return response()->json(new AudienceResource(), 200);
+        try {
+            $audience = $this->audienceService->getAudienceById($id);
+            return new AudienceResource($audience);
+        } catch (AudienceNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
     /**
@@ -48,8 +60,12 @@ class AudienceController extends Controller
      */
     public function updateAudience(AudienceRequest $request, int $id): JsonResponse
     {
-        $request = $request->validated();
-        $isUpdated = AudienceService::updateAudience($id, $request->name, $request->capacity);
+        $request->validate();
+        $isUpdated = $this->audienceService->updateAudience(
+            $id,
+            $request->input('name'),
+            $request->input('capacity')
+        );
         return response()->json(new AudienceResource(), 200);
     }
 
@@ -61,7 +77,7 @@ class AudienceController extends Controller
      */
     public function deleteAudience(int $id): JsonResponse
     {
-        $isDeleted = AudienceService::deleteAudience($id);
+        $isDeleted = $this->audienceService->deleteAudience($id);
         return response()->json(null, 204);
     }
 }

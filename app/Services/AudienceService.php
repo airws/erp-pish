@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AudienceNotFoundException;
+use App\Http\Resources\AudienceResource;
 use App\Models\Audience;
 
 /**
@@ -13,7 +15,7 @@ use App\Models\Audience;
  */
 class AudienceService
 {
-    public static function createAudience(string $name, int $capacity)
+    public function createAudience(string $name, int $capacity): Audience
     {
         $audienceData = [
             'name' => $name,
@@ -22,12 +24,19 @@ class AudienceService
         return Audience::create($audienceData);
     }
 
-    public static function getAudienceById(int $id)
+    /**
+     * @throws AudienceNotFoundException
+     */
+    public function getAudienceById(int $id): Audience
     {
-        return Audience::findOrFail($id);
+        $audience = Audience::find($id);
+        if (!$audience) {
+            throw new AudienceNotFoundException();
+        }
+        return $audience;
     }
 
-    public static function updateAudience(int $id, string $name, int $capacity)
+    public function updateAudience(int $id, string $name, int $capacity)
     {
         $audience = Audience::findOrFail($id);
         $audienceData = [
@@ -37,7 +46,7 @@ class AudienceService
         return $audience->update($audienceData);
     }
 
-    public static function deleteAudience(int $id)
+    public function deleteAudience(int $id)
     {
         $audience = Audience::findOrFail($id);
         return $audience->delete();

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\AudienceService;
 use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            AudienceService::class,
+            AudienceService::class
+        );
     }
 
     /**
